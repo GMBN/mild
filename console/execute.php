@@ -25,13 +25,13 @@ if ($servico) {
     if (file_exists($file)) {
         require_once $file;
     } else {
-        echo "\033[31m O servico  " . $servico . " nao existe \n";
+        echo vermelho(' O servico "' . $servico . '" nao existe');
     }
 } else {
     $diretorio = dir(__DIR__ . '/src/');
     $ignore = ['.', '..'];
 
-    echo "\033[33m Servicos disponivels: \n";
+    echo amarelo("Servicos disponivels:");
 
     while ($arquivo = $diretorio->read()) {
         //ignora os diretorios
@@ -41,6 +41,17 @@ if ($servico) {
 
         $name = str_replace('.php', '', $arquivo);
         //exibe os servicos disponiveis em verde
-        echo "\033[32m " . $name . "\n";
+        echo  verde($name) ;
     }
+}
+
+
+function verde($text){
+    return "\033[32m ".$text. "\n";
+}
+function vermelho($text){
+    return "\033[31m ".$text. "\n";
+}
+function amarelo($text){
+    return "\033[33m ".$text. "\n";
 }

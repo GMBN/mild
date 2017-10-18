@@ -9,7 +9,7 @@ class Perfil {
         $config = new \Model\Config();
         $rs = $config->findAll();
         print_r($rs);
-//        echo 'Bem Vindo ' . $slug;
+        echo 'Bem Vindo ' . $slug;
         return ['testeNome' => strtoupper($slug)];
     }
 
