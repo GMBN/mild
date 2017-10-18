@@ -1,5 +1,21 @@
 <?php
 
+$tabela = isset($argv[2]) ? $argv[2] : null;
+
+//verifica se e para processar apenas uma tabela
+if ($tabela) {
+    $name = $tabela;
+    echo amarelo('Gerando model da tabela "' . $name . '"');
+    $desc = (new Base\Table())->desc($name);
+    if (count($desc) == 0) {
+        vermelho('tabela "' . $name . '" nao existe no banco de dados');
+        return ;
+    }
+    layoutPHP($name, $desc);
+    return;
+}
+
+//processa todas as tabelas
 $tables = (new Base\Table())->showAll();
 
 
@@ -21,7 +37,7 @@ function layoutPHP($tabela, $desc) {
     $php .= ' class ' . toCamelCase($tabela) . ' extends \Base\DAO {' . "\n\n";
 
     $php .= '   protected $_table = "' . $tabela . '"; ' . "\n";
-    
+
     //gera os atributos
     foreach ($desc as $d) {
         $field = $d['Field'];
@@ -36,7 +52,7 @@ function layoutPHP($tabela, $desc) {
         $php .= '           $this->' . $field . '=$' . $field . ";\n";
         $php .= '   }' . "\n\n";
     }
-    
+
     $php .= ' }';
 
     $arquivo = toCamelCase($tabela);
