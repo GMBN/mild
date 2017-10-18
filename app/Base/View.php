@@ -24,10 +24,12 @@ class View {
         //verifica se existe o controller
         if (class_exists($class)) {
 
-            //verifica se existe a action
-            if (method_exists($class, $this->action)) {
+            $obj = new $class();
 
-                $dados = call_user_func_array([$class, $this->action], $this->par);
+            //verifica se existe a action
+            if (method_exists($obj, $this->action)) {
+
+                $dados = call_user_func_array([$obj, $this->action], $this->par);
 
                 //executa a view
                 $this->view($dados);
@@ -60,14 +62,14 @@ class View {
 
         //inclui o arquivo da view
         require $viewFile;
-        
+
         //obtem o conteudo e atribui a variavel content
         $this->content = ob_get_clean();
-        
+
         //verifica se não é ajax e inclui o arquivo de layout
-        if($this->verbo !='AJAX'){
-            require_once ROOT.'/app/View/layout.php';
-        }else{
+        if ($this->verbo != 'AJAX') {
+            require_once ROOT . '/app/View/layout.php';
+        } else {
             //exibe o conteudo
             echo $this->content;
         }
