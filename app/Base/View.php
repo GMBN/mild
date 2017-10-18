@@ -31,8 +31,11 @@ class View {
 
                 $dados = call_user_func_array([$obj, $this->action], $this->par);
 
-                //executa a view
-                $this->view($dados);
+                //verifica se houve retorno do controller para chamar a view
+                if ($dados) {
+                    //executa a view
+                    $this->view($dados);
+                }
             } else {
                 return Log::erro('Action (metodo) "' . $this->action . '" nao encontrado no controller "' . $this->controller . '"');
             }
